@@ -1,9 +1,9 @@
 {
   "name": "workflow-lib",
-  "private": true,
-  "version": "0.0.0",
+  "private": false,
+  "version": "0.0.2",
   "description": "TODO",
-  "author": "Innei",
+  "author": "Carlos Nexans",
   "license": "MIT",
   "repository": {
     "type": "git",
