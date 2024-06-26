@@ -11,6 +11,11 @@ const NodeTokens = {
 
 // Clase base para todos los nodos
 abstract class BaseNode {
+  protected constructor(
+    readonly id: string,
+    readonly name: string,
+  ) {}
+
   abstract execute(context: Context): Promise<void>
 
   abstract dump(): any
@@ -31,8 +36,12 @@ abstract class BaseNode {
 
 // Nodo que ejecuta un código personalizado
 export class FunctionNode extends BaseNode {
-  constructor(private func: (context: Context) => Promise<void>) {
-    super()
+  constructor(
+    id: string,
+    name: string,
+    private func: (context: Context) => Promise<void>,
+  ) {
+    super(id, name)
   }
 
   async execute(context: Context): Promise<void> {
@@ -50,14 +59,18 @@ export class FunctionNode extends BaseNode {
     const func = new Function('context', `return (${data.func})(context)`) as (
       context: Context,
     ) => Promise<void>
-    return new FunctionNode(func)
+    return new FunctionNode(data.id, data.name, func)
   }
 }
 
 // Nodo que ejecuta nodos hijos en secuencia
 export class SequentialGroup extends BaseNode {
-  constructor(private children: BaseNode[]) {
-    super()
+  constructor(
+    id: string,
+    name: string,
+    private children: BaseNode[],
+  ) {
+    super(id, name)
   }
 
   async execute(context: Context): Promise<void> {
@@ -77,13 +90,17 @@ export class SequentialGroup extends BaseNode {
     const children = data.children.map((child: any) => {
       return BaseNode.load(child)
     })
-    return new SequentialGroup(children)
+    return new SequentialGroup(data.id, data.name, children)
   }
 }
 
 export class ParallelGroup extends BaseNode {
-  constructor(private children: BaseNode[]) {
-    super()
+  constructor(
+    id: string,
+    name: string,
+    private children: BaseNode[],
+  ) {
+    super(id, name)
   }
 
   async execute(context: Context): Promise<void> {
@@ -101,7 +118,7 @@ export class ParallelGroup extends BaseNode {
     const children = data.children.map((child: any) => {
       return BaseNode.load(child)
     })
-    return new ParallelGroup(children)
+    return new ParallelGroup(data.id, data.name, children)
   }
 }
 

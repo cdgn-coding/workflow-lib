@@ -6,8 +6,8 @@ describe('workflow', () => {
       console.log('Executing custom function', context)
     }
 
-    const funcNode = new FunctionNode(customFunction)
-    const seqGroup = new SequentialGroup([funcNode])
+    const funcNode = new FunctionNode('1', 'customFunction', customFunction)
+    const seqGroup = new SequentialGroup('2', 'sequential group 1', [funcNode])
     const workflow = new Workflow(seqGroup)
 
     const initialContext: Context = { data: 'initial data' }
@@ -20,8 +20,8 @@ describe('workflow', () => {
       console.log('Executing custom function', context)
     }
 
-    const funcNode = new FunctionNode(customFunction)
-    const seqGroup = new SequentialGroup([funcNode])
+    const funcNode = new FunctionNode('1', 'customFunction', customFunction)
+    const seqGroup = new SequentialGroup('2', 'sequential group 1', [funcNode])
     const workflow = new Workflow(seqGroup)
 
     const serialized = workflow.dump()
@@ -33,8 +33,8 @@ describe('workflow', () => {
       console.log('Executing custom function', context)
     }
 
-    const funcNode = new FunctionNode(customFunction)
-    const seqGroup = new SequentialGroup([funcNode])
+    const funcNode = new FunctionNode('1', 'customFunction', customFunction)
+    const seqGroup = new SequentialGroup('2', 'sequential group 1', [funcNode])
     const workflow = new Workflow(seqGroup)
 
     const serialized = workflow.dump()
@@ -46,9 +46,8 @@ describe('workflow', () => {
     async function customFunction(context: Context): Promise<void> {
       context.value = 42
     }
-    const funcNode = new FunctionNode(customFunction)
-
-    const seqGroup = new SequentialGroup([funcNode])
+    const funcNode = new FunctionNode('1', 'customFunction', customFunction)
+    const seqGroup = new SequentialGroup('2', 'sequential group 1', [funcNode])
 
     const workflow = new Workflow(seqGroup)
 
@@ -63,19 +62,20 @@ describe('workflow', () => {
     async function hypotenuse(context: Context): Promise<void> {
       context.c_squared = context.a ** 2 + context.b ** 2
     }
-    const funcNode = new FunctionNode(hypotenuse)
-
-    const workflow = new Workflow(funcNode)
+    const funcNode = new FunctionNode('1', 'hypotenuse', hypotenuse)
+    const seqGroup = new SequentialGroup('2', 'sequential group 1', [funcNode])
 
     const context: Context = { a: 5, b: 3 }
-
+    const workflow = new Workflow(seqGroup)
     await workflow.run(context)
 
     expect(context.c_squared).toEqual(34)
   })
 
   it('can represent empty workflow', () => {
-    const workflow = new Workflow(new SequentialGroup([]))
+    const workflow = new Workflow(
+      new SequentialGroup('1', 'sequential group 1', []),
+    )
     const serialized = workflow.dump()
     expect(JSON.parse(serialized)).toEqual({
       type: 'SequentialGroup',
