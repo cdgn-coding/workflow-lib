@@ -1,5 +1,5 @@
 {
-  "name": "my-awesome-lib",
+  "name": "workflow-lib",
   "private": true,
   "version": "0.0.0",
   "description": "TODO",
@@ -73,7 +73,7 @@
     "package": "NODE_ENV=production npm run build && rollup -c",
     "prepackage": "rm -rf dist",
     "test": "vitest",
-    "prepare": "husky install && cd example && pnpm i",
+    "prepare": "husky install && cd example && npm i",
     "release": "bump"
   },
   "devDependencies": {
