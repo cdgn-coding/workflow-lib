@@ -73,7 +73,7 @@
     "package": "NODE_ENV=production npm run build && rollup -c",
     "prepackage": "rm -rf dist",
     "test": "vitest",
-    "prepare": "husky install && cd example && npm i",
+    "prepare": "husky install",
     "release": "bump"
   },
   "devDependencies": {
