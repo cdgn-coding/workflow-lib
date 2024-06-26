@@ -10,7 +10,7 @@ const NodeTokens = {
 }
 
 // Clase base para todos los nodos
-abstract class BaseNode {
+export abstract class BaseNode {
   protected constructor(
     readonly id: string,
     readonly name: string,
@@ -50,6 +50,8 @@ export class FunctionNode extends BaseNode {
 
   dump(): any {
     return {
+      id: this.id,
+      name: this.name,
       type: NodeTokens.FunctionNode,
       func: this.func.toString(),
     }
@@ -81,6 +83,8 @@ export class SequentialGroup extends BaseNode {
 
   dump(): any {
     return {
+      id: this.id,
+      name: this.name,
       type: NodeTokens.SequentialGroup,
       children: this.children.map((child) => child.dump()),
     }
@@ -109,6 +113,8 @@ export class ParallelGroup extends BaseNode {
 
   dump(): any {
     return {
+      id: this.id,
+      name: this.name,
       type: NodeTokens.ParallelGroup,
       children: this.children.map((child) => child.dump()),
     }
@@ -137,5 +143,9 @@ export class Workflow {
   static load(dataString: string): Workflow {
     const data = JSON.parse(dataString)
     return new Workflow(BaseNode.load(data))
+  }
+
+  static empty(): Workflow {
+    return new Workflow(new SequentialGroup('root', 'sequential_root', []))
   }
 }

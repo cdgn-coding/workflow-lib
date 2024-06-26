@@ -73,13 +73,10 @@ describe('workflow', () => {
   })
 
   it('can represent empty workflow', () => {
-    const workflow = new Workflow(
-      new SequentialGroup('1', 'sequential group 1', []),
-    )
+    const workflow = Workflow.empty()
     const serialized = workflow.dump()
-    expect(JSON.parse(serialized)).toEqual({
-      type: 'SequentialGroup',
-      children: [],
-    })
+    expect(serialized).toEqual(
+      `{"id":"root","name":"sequential_root","type":"SequentialGroup","children":[]}`,
+    )
   })
 })
