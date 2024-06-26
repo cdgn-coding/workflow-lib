@@ -73,4 +73,13 @@ describe('workflow', () => {
 
     expect(context.c_squared).toEqual(34)
   })
+
+  it('can represent empty workflow', () => {
+    const workflow = new Workflow(new SequentialGroup([]))
+    const serialized = workflow.dump()
+    expect(JSON.parse(serialized)).toEqual({
+      type: 'SequentialGroup',
+      children: [],
+    })
+  })
 })
