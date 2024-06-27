@@ -3,7 +3,7 @@ export interface Context {
   [key: string]: any
 }
 
-const NodeTokens = {
+export const NodeTokens = {
   FunctionNode: 'FunctionNode',
   SequentialGroup: 'SequentialGroup',
   ParallelGroup: 'ParallelGroup',
